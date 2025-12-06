@@ -27,6 +27,7 @@ namespace CLog
 
         ~Logger()
         {
+            m_Running = false;
 			if (m_Thread.joinable())
                 m_Thread.join();
         }
@@ -75,6 +76,7 @@ namespace CLog
         }
 
     private:
+        bool m_Running = true;
         LogLevel m_MinimumLogLevel;
         std::vector<std::string> m_MessageBuffer;
         std::thread m_Thread;
@@ -93,10 +95,13 @@ namespace CLog
 
         void sinkLoop()
         {
-            while (true)
+            while (m_Running)
             {
                 sinkBuffer();
             }
+
+            if (m_MessageBuffer.size() > 0)
+                sinkBuffer();
         }
     };
 
