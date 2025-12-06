@@ -15,6 +15,17 @@ namespace CLog
         Error
     };
 
+    struct LogMessage
+    {
+        LogMessage(const std::string &text, LogLevel level)
+            : Text(text), Level(level)
+        {
+        }
+
+        std::string Text;
+        LogLevel Level;
+    };
+
     class Logger
     {
     public:
@@ -55,7 +66,7 @@ namespace CLog
             }
 
             std::string messageToLog = prefix + " " + message + "\n";
-            m_MessageBuffer.emplace_back(messageToLog);
+            m_MessageBuffer.emplace_back(CLog::LogMessage(messageToLog, level));
         }
 
         void Info(const std::string &message)
@@ -78,7 +89,7 @@ namespace CLog
     private:
         bool m_Running = true;
         LogLevel m_MinimumLogLevel;
-        std::vector<std::string> m_MessageBuffer;
+        std::vector<CLog::LogMessage> m_MessageBuffer;
         std::thread m_Thread;
 
         void sinkBuffer()
@@ -86,8 +97,28 @@ namespace CLog
             if (m_MessageBuffer.size() == 0)
                 return;
 
-            for (const std::string &message : m_MessageBuffer)
-                std::cout << message;
+            for (CLog::LogMessage &message : m_MessageBuffer)
+            {
+                std::string colorCode = "0";
+
+                switch (message.Level)
+                {
+                case LogLevel::Info:
+                    colorCode = "94";
+                    break;
+                case LogLevel::Debug:
+                    colorCode = "32";
+                    break;
+                case LogLevel::Warn:
+                    colorCode = "93";
+                    break;
+                case LogLevel::Error:
+                    colorCode = "31";
+                    break;
+                }
+
+                std::cout << "\033[" << colorCode << "m" << message.Text << "\033[0m";
+            }
 
             std::cout << std::endl;
             m_MessageBuffer.clear();
