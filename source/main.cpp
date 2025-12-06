@@ -7,5 +7,4 @@ int main()
     myLogger.Debug("Hello World!");
     myLogger.Warn("Hello World!");
     myLogger.Error("Hello World!");
-    return 0;
 }

@@ -1,6 +1,8 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
+#include <thread>
 
 namespace CLog
 {
@@ -19,6 +21,14 @@ namespace CLog
         Logger(LogLevel minimumLogLevel = LogLevel::Info)
             : m_MinimumLogLevel(minimumLogLevel)
         {
+            m_Thread = std::thread([this]()
+                                   { this->sinkLoop(); });
+        }
+
+        ~Logger()
+        {
+			if (m_Thread.joinable())
+                m_Thread.join();
         }
 
         void LogMessage(LogLevel level, const std::string &message)
@@ -43,8 +53,8 @@ namespace CLog
                 break;
             }
 
-            std::string messageToLog = prefix + " " + message;
-            std::cout << messageToLog << "\n";
+            std::string messageToLog = prefix + " " + message + "\n";
+            m_MessageBuffer.emplace_back(messageToLog);
         }
 
         void Info(const std::string &message)
@@ -66,6 +76,28 @@ namespace CLog
 
     private:
         LogLevel m_MinimumLogLevel;
+        std::vector<std::string> m_MessageBuffer;
+        std::thread m_Thread;
+
+        void sinkBuffer()
+        {
+            if (m_MessageBuffer.size() == 0)
+                return;
+
+            for (const std::string &message : m_MessageBuffer)
+                std::cout << message;
+
+            std::cout << std::endl;
+            m_MessageBuffer.clear();
+        }
+
+        void sinkLoop()
+        {
+            while (true)
+            {
+                sinkBuffer();
+            }
+        }
     };
 
 }
