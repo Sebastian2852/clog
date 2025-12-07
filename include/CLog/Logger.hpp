@@ -5,30 +5,12 @@
 #include <thread>
 #include <memory>
 
+#include "LogMessage.hpp"
 #include "Utils.hpp"
 #include "Sink.hpp"
 
 namespace CLog
 {
-
-    enum LogLevel
-    {
-        Info,
-        Debug,
-        Warn,
-        Error
-    };
-
-    struct LogMessage
-    {
-        LogMessage(const std::string &text, LogLevel level)
-            : Text(text), Level(level)
-        {
-        }
-
-        std::string Text;
-        LogLevel Level;
-    };
 
     class Logger
     {
@@ -97,46 +79,8 @@ namespace CLog
 
             for (CLog::LogMessage &message : m_MessageBuffer)
             {
-                std::string prefix = "";
-                switch (message.Level)
-                {
-                case LogLevel::Info:
-                    prefix = "INFO";
-                    break;
-                case LogLevel::Debug:
-                    prefix = "DEBUG";
-                    break;
-                case LogLevel::Warn:
-                    prefix = "WARNING";
-                    break;
-                case LogLevel::Error:
-                    prefix = "ERROR";
-                    break;
-                }
-
-                std::string colorCode = "0";
-                switch (message.Level)
-                {
-                case LogLevel::Info:
-                    colorCode = "94";
-                    break;
-                case LogLevel::Debug:
-                    colorCode = "32";
-                    break;
-                case LogLevel::Warn:
-                    colorCode = "93";
-                    break;
-                case LogLevel::Error:
-                    colorCode = "31";
-                    break;
-                }
-
-                Utils::ReplaceAllInString(message.Text, "{PREFIX}", prefix);
-                Utils::ReplaceAllInString(message.Text, "{COLOR_START}", "\033[" + colorCode + "m");
-                Utils::ReplaceAllInString(message.Text, "{COLOR_END}", "\033[0m");
-
                 for (auto &sink : m_Sinks)
-                    sink->log(message.Text);
+                    sink->log(message);
             }
 
             std::cout << std::endl;
