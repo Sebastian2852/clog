@@ -11,7 +11,7 @@ namespace CLog
 	public:
 		Logger(std::string name = "");
 		~Logger();
-		void Print(LogLevel level, std::string_view str);
+		void Print(LogLevel level, std::string str);
 
 	private:
 		std::string GetColorCodeForLevel(LogLevel level);

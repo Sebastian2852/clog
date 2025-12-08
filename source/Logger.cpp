@@ -14,7 +14,7 @@ namespace CLog
 	{
 	}
 
-	void Logger::Print(LogLevel level, std::string_view str)
+	void Logger::Print(LogLevel level, std::string str)
 	{
 		std::string logMessage = m_LogFormat;
 		Utils::ReplaceInString(logMessage, "%{NAME}", m_Name);
