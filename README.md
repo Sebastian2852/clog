@@ -1,6 +1,6 @@
 # CLog
 
-CLog (which stands of cool log) is a simple header only log library instended to be simple and flexible for all applications. Take a look at this example:
+CLog (which stands of cool log) is a simple logging library instended to be simple and flexible for all applications. Take a look at this example:
 ```cpp
 CLog::Logger myLogger("{COLOR_START}[{PREFIX}] {MESSAGE}{COLOR_END}");
 myLogger.AddSink<CLog::Sinks::ConsoleSink>();
