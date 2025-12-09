@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 namespace CLog
 {
 
@@ -10,6 +12,12 @@ namespace CLog
 		Info,
 		Warn,
 		Error
+	};
+
+	struct LogMessage
+	{
+		std::string message;
+		LogLevel level;
 	};
 
 }

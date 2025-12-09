@@ -31,10 +31,6 @@ namespace CLog
 		void Error(std::string str) { Print(LogLevel::Error, str); }
 
 	private:
-		std::string GetColorCodeForLevel(LogLevel level);
-		std::string GetPrefixForLevel(LogLevel level);
-
-	private:
 		std::string m_Name;
 		std::string m_LogFormat;
 		std::vector<std::shared_ptr<Sink::BaseSink>> m_Sinks;

@@ -1,12 +1,17 @@
 #include "Sinks.hpp"
+#include "Utils.hpp"
 
 #include <iostream>
 
 namespace CLog::Sink
 {
-	void ConsoleSink::print(std::string &str)
+	void ConsoleSink::Print(LogMessage &message)
 	{
-		std::cout << str;
+		std::string mut = message.message; // Copy the string so we dont modify it for other sinks
+		Utils::ReplaceInString(mut, "%{COLOR_START}", Utils::GetColorCodeForLevel(message.level));
+		Utils::ReplaceInString(mut, "%{PREFIX}", Utils::GetPrefixForLevel(message.level));
+		mut += "\033[0m\n";
+		std::cout << mut;
 	}
 
 	FileSink::FileSink(const std::string &filename)
@@ -19,8 +24,11 @@ namespace CLog::Sink
 		m_File.close();
 	}
 
-	void FileSink::print(std::string &str)
+	void FileSink::Print(LogMessage &message)
 	{
-		m_File << str;
+		std::string mut = message.message; // Copy the string so we dont modify it for other sinks
+		Utils::ReplaceInString(mut, "%{COLOR_START}", "");
+		Utils::ReplaceInString(mut, "%{PREFIX}", Utils::GetPrefixForLevel(message.level));
+		m_File << mut + "\n";
 	};
 }

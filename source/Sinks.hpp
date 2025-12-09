@@ -3,6 +3,8 @@
 #include <string>
 #include <fstream>
 
+#include "LogLevel.hpp"
+
 namespace CLog::Sink
 {
 
@@ -15,13 +17,13 @@ namespace CLog::Sink
 
 		~BaseSink() = default;
 
-		virtual void print(std::string &str) = 0;
+		virtual void Print(LogMessage &message) = 0;
 	};
 
 	class ConsoleSink : public BaseSink
 	{
 	public:
-		void print(std::string &str) override;
+		void Print(LogMessage &message) override;
 	};
 
 	class FileSink : public BaseSink
@@ -30,7 +32,7 @@ namespace CLog::Sink
 		FileSink(const std::string &filename);
 		~FileSink();
 
-		void print(std::string &str) override;
+		void Print(LogMessage &message) override;
 
 	private:
 		std::ofstream m_File;
