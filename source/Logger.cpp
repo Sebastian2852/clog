@@ -21,7 +21,12 @@ namespace CLog
 		Utils::ReplaceInString(logMessage, "%{COLOR_START}", GetColorCodeForLevel(level));
 		Utils::ReplaceInString(logMessage, "%{PREFIX}", GetPrefixForLevel(level));
 		Utils::ReplaceInString(logMessage, "%{MSG}", std::string(str));
-		std::cout << logMessage << "\033[0m\n";
+		logMessage += "\033[0m\n";
+
+		for (auto sink : m_Sinks)
+		{
+			sink->print(logMessage);
+		}
 	}
 
 	std::string Logger::GetColorCodeForLevel(LogLevel level)
