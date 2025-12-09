@@ -20,6 +20,7 @@ add_library(clog
 target_include_directories(clog
 	PUBLIC source
 )
+set_target_properties(clog PROPERTIES FOLDER "CLog")
 
 include(FetchContent)
 FetchContent_Declare(
@@ -31,13 +32,16 @@ FetchContent_MakeAvailable(fmt)
 target_link_libraries(clog
 	PUBLIC fmt
 )
+set_target_properties(fmt PROPERTIES FOLDER "CLog")
 
 if(CLOG_BUILD_EXAMPLE)
-	project(example)
 	add_executable(example
 		example/main.cpp
 	)
 	target_link_libraries(example
 		PRIVATE clog
 	)
+	if (CMAKE_GENERATOR MATCHES "Visual Studio")
+		set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT example)
+	endif()
 endif()
