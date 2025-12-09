@@ -2,7 +2,7 @@
 
 CLog (which stands of cool log) is a simple logging library instended to be simple and flexible for all applications. Take a look at this example:
 ```cpp
-CLog::Logger myLogger("{COLOR_START}[{PREFIX}] {MESSAGE}{COLOR_END}");
+CLog::Logger myLogger("Example Logger");
 myLogger.AddSink<CLog::Sinks::ConsoleSink>();
 myLogger.AddSink<CLog::Sinks::FileSink>("latest.log");
 myLogger.Info("Hello World!");
