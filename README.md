@@ -1,24 +1,28 @@
 # CLog
 
-CLog (which stands of cool log) is a simple logging library instended to be simple and flexible for all applications. Take a look at this example:
+CLog (which stands for cool log) is a logging library designed to have a really simple API while being super flexible. You can look under the `example` directory to get a basic understanding of how CLog works. In short CLog allows you to create logger classes and add sinks to them. Those sinks implement how the logger will actually "print" out its logs. This means that if you dont like anything about how CLog works out the box you can create your own sink which works how *you* would like it to.
+
+Here is a basic code example for creating a logger and logging a message:
 ```cpp
-CLog::Logger myLogger("Example Logger");
-myLogger.AddSink<CLog::Sinks::ConsoleSink>();
-myLogger.AddSink<CLog::Sinks::FileSink>("latest.log");
-myLogger.Info("Hello World!");
-myLogger.Debug("Hello World!");
-myLogger.Warn("Hello World!");
-myLogger.Error("Hello World!");
+#include "CLog.hpp"
+
+int main()
+{
+  // Create a logger; there is a default format provided which works with the built-in sinks
+  CLog::Logger myLogger("My Logger")
+
+  // Add the console sink which is a built-in sink which prints out COLORED logs to the console window
+  myLogger.AddSink<CLog::Sinks::ConsoleSink>();
+
+  // Add the file sink which is a built-int sink which prints out plain-text logs into the passed file
+  myLogger.AddSink<CLog::Sinks::FileSink>("latest.log");
+
+  // Now the logger is ready to use
+  myLogger.Info("Hello World!");
+  myLogger.Debug("Hello World!");
+  myLogger.Warn("Hello World!");
+  myLogger.Error("Hello World!");
+}
 ```
 
-Which would print this in console:
-
-<img width="357" height="91" alt="image" src="https://github.com/user-attachments/assets/1f3635e0-3134-44c1-a22e-2eb3a977322c" />
-
-As well as a log file containing:
-```txt
-[INFO] Hello World!
-[DEBUG] Hello World!
-[WARNING] Hello World!
-[ERROR] Hello World!
-```
+I wont go into detail on how to write your own `Sink`s but they are really simple they boil down to a single `Print` function which you implement in your sink, you should use the built-in sinks as a guide. 
