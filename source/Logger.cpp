@@ -33,6 +33,8 @@ namespace CLog
 	{
 		switch (level)
 		{
+		case LogLevel::Trace:
+			return "\033[0m";
 		case LogLevel::Info:
 			return "\033[94m";
 		case LogLevel::Debug:
