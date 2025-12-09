@@ -23,6 +23,12 @@ namespace CLog
 			m_Sinks.emplace_back(std::make_shared<T>(std::forward<Args>(args)...));
 		}
 
+		void Trace(std::string str) { Print(LogLevel::Trace, str); }
+		void Info(std::string str) { Print(LogLevel::Info, str); }
+		void Debug(std::string str) { Print(LogLevel::Debug, str); }
+		void Warn(std::string str) { Print(LogLevel::Warn, str); }
+		void Error(std::string str) { Print(LogLevel::Error, str); }
+
 	private:
 		std::string GetColorCodeForLevel(LogLevel level);
 		std::string GetPrefixForLevel(LogLevel level);
