@@ -9,7 +9,7 @@ Here is a basic code example for creating a logger and logging a message:
 int main()
 {
   // Create a logger; there is a default format provided which works with the built-in sinks
-  CLog::Logger myLogger("My Logger")
+  CLog::Logger myLogger("My Logger");
 
   // Add the console sink which is a built-in sink which prints out COLORED logs to the console window
   myLogger.AddSink<CLog::Sinks::ConsoleSink>();
@@ -23,6 +23,12 @@ int main()
   myLogger.Warn("Hello World!");
   myLogger.Error("Hello World!");
 }
+```
+
+CLog also supports the FMT library meaning that you can also write logs like this:
+```cpp
+  CLog::Logger myLogger("My Logger");
+  myLogger.Trace("We {1} {0}!", "fmt", "support");
 ```
 
 I wont go into detail on how to write your own `Sink`s but they are really simple they boil down to a single `Print` function which you implement in your sink, you should use the built-in sinks as a guide. 
